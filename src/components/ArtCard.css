@@ -1,0 +1,7 @@
+.art-card { display: flex; flex-direction: column; gap: 1rem; cursor: pointer; }
+.img-wrapper { overflow: hidden; border-radius: var(--radius-sm); box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: box-shadow var(--transition-fast); }
+.art-card:hover .img-wrapper { box-shadow: var(--shadow-hover); }
+.img-wrapper img { width: 100%; height: auto; transition: transform 0.4s ease; }
+.art-card:hover .img-wrapper img { transform: scale(1.02); }
+.art-info h3 { font-size: 1.2rem; margin-bottom: 0.2rem; }
+.art-info p { font-size: 0.9rem; color: var(--color-text-muted); }
