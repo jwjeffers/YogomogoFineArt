@@ -1,14 +1,4 @@
 {
   "blogs": [],
-  "artworks": [
-    {
-      "id": "1776140998179",
-      "title": "Untitled",
-      "medium": "Oil on Panel",
-      "description": "",
-      "date": "2025-02-15",
-      "img": "/uploads/1776140998142-IMG_3068.jpg",
-      "available": true
-    }
-  ]
+  "artworks": []
 }
