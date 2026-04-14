@@ -160,7 +160,7 @@ export default function DevAdmin() {
       
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
         <button onClick={() => {setActiveTab('artworks'); setEditingArtwork(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='artworks'?'#000':'#eee', color: activeTab==='artworks'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Artworks</button>
-        <button onClick={() => {setActiveTab('blogs'); setEditingBlog(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Journal</button>
+        <button onClick={() => {setActiveTab('blogs'); setEditingBlog(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Studio Notes</button>
       </div>
 
       {activeTab === 'artworks' && (
@@ -213,7 +213,7 @@ export default function DevAdmin() {
       {activeTab === 'blogs' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
           <div>
-            <h3>Current Journal Posts</h3>
+            <h3>Current Studio Notes</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               {(data.blogs || []).map(b => (
                 <div key={b.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingBlog?.id === b.id ? '2px solid black' : 'none' }}>
