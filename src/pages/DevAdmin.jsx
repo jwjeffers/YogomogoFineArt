@@ -76,7 +76,8 @@ export default function DevAdmin() {
       medium: form.medium.value,
       description: form.description.value,
       date: form.date.value,
-      img: imgUrl
+      img: imgUrl,
+      available: form.available.checked
     };
     
     let newArtworks = [...data.artworks];
@@ -169,7 +170,7 @@ export default function DevAdmin() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               {(data.artworks || []).map(a => (
                 <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingArtwork?.id === a.id ? '2px solid black' : 'none' }}>
-                  <span>{a.title} {a.date && <span style={{color: 'gray', fontSize:'0.8em'}}>({a.date})</span>}</span>
+                  <span>{a.title} {a.available && <strong style={{color: 'green', fontSize:'0.8em'}}>[For Sale]</strong>}</span>
                   <div>
                     <button onClick={() => setEditingArtwork(a)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
                     <button onClick={() => handleDeleteArtwork(a.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
@@ -187,6 +188,12 @@ export default function DevAdmin() {
               <input name="medium" defaultValue={editingArtwork?.medium || ''} placeholder="Medium (e.g., Oil on Canvas)" required style={{ padding: '0.5rem' }} />
               <input name="date" type="date" defaultValue={editingArtwork?.date || ''} placeholder="Completed Date" style={{ padding: '0.5rem' }} />
               <textarea name="description" defaultValue={editingArtwork?.description || ''} placeholder="Description..." style={{ padding: '0.5rem', minHeight: '100px' }}></textarea>
+              
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0', fontWeight: 'bold' }}>
+                <input name="available" type="checkbox" defaultChecked={editingArtwork ? editingArtwork.available : false} />
+                Available for Purchase (Triggers Sales Button)
+              </label>
+
               <div>
                 <label>Upload Image:</label><br/>
                 <input type="file" name="imgFile" accept="image/*" />
