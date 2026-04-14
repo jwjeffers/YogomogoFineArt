@@ -53,7 +53,7 @@ export default function Lightbox({ artwork, onClose }) {
           
           {artwork.available && (
             <button 
-              onClick={() => window.location.href = `mailto:inquiries@jacksonjeffersstudio.com?subject=Inquiry: ${artwork.title}`}
+              onClick={() => window.location.href = `mailto:inquiries@jjeffers-studio.com?subject=Inquiry: ${artwork.title}`}
               style={{
                 width: 'fit-content',
                 padding: '1rem 2rem',
