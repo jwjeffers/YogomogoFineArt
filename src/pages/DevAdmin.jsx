@@ -6,8 +6,9 @@ export default function DevAdmin() {
   const [loading, setLoading] = useState(true);
   const [publishing, setPublishing] = useState(false);
 
-  // Form states
   const [activeTab, setActiveTab] = useState('artworks');
+  const [editingArtwork, setEditingArtwork] = useState(null);
+  const [editingBlog, setEditingBlog] = useState(null);
   
   useEffect(() => {
     fetch('/api/data')
@@ -62,7 +63,7 @@ export default function DevAdmin() {
     setPublishing(false);
   };
 
-  const handleAddArtwork = async (e) => {
+  const handleSaveArtwork = async (e) => {
     e.preventDefault();
     const form = e.target;
     let imgUrl = form.imgText.value;
@@ -70,22 +71,34 @@ export default function DevAdmin() {
       imgUrl = await uploadImage(form.imgFile.files[0]);
     }
     const newArt = {
-      id: Date.now().toString(),
+      id: editingArtwork ? editingArtwork.id : Date.now().toString(),
       title: form.title.value,
       medium: form.medium.value,
       description: form.description.value,
+      date: form.date.value,
       img: imgUrl
     };
-    await saveData({ ...data, artworks: [...data.artworks, newArt] });
+    
+    let newArtworks = [...data.artworks];
+    if (editingArtwork) {
+      const idx = newArtworks.findIndex(a => a.id === editingArtwork.id);
+      if (idx !== -1) newArtworks[idx] = newArt;
+    } else {
+      newArtworks.push(newArt);
+    }
+    
+    await saveData({ ...data, artworks: newArtworks });
+    setEditingArtwork(null);
     form.reset();
   };
 
   const handleDeleteArtwork = async (id) => {
     if (!window.confirm("Delete this artwork?")) return;
     await saveData({ ...data, artworks: data.artworks.filter(a => a.id !== id) });
+    if (editingArtwork && editingArtwork.id === id) setEditingArtwork(null);
   };
 
-  const handleAddBlog = async (e) => {
+  const handleSaveBlog = async (e) => {
     e.preventDefault();
     const form = e.target;
     let coverUrl = form.coverText.value;
@@ -93,20 +106,31 @@ export default function DevAdmin() {
       coverUrl = await uploadImage(form.coverFile.files[0]);
     }
     const newBlog = {
-      id: Date.now().toString(),
+      id: editingBlog ? editingBlog.id : Date.now().toString(),
       title: form.title.value,
-      date: new Date().toISOString().split('T')[0],
+      date: form.date.value || new Date().toISOString().split('T')[0],
       excerpt: form.excerpt.value,
       content: form.content.value,
       cover: coverUrl
     };
-    await saveData({ ...data, blogs: [...data.blogs, newBlog] });
+    
+    let newBlogs = [...data.blogs];
+    if (editingBlog) {
+      const idx = newBlogs.findIndex(b => b.id === editingBlog.id);
+      if (idx !== -1) newBlogs[idx] = newBlog;
+    } else {
+      newBlogs.push(newBlog);
+    }
+    
+    await saveData({ ...data, blogs: newBlogs });
+    setEditingBlog(null);
     form.reset();
   };
 
   const handleDeleteBlog = async (id) => {
     if (!window.confirm("Delete this post?")) return;
     await saveData({ ...data, blogs: data.blogs.filter(b => b.id !== id) });
+    if (editingBlog && editingBlog.id === id) setEditingBlog(null);
   };
 
   if (loading) return <div className="page container" style={{paddingTop: '8rem'}}>Loading config...</div>;
@@ -134,8 +158,8 @@ export default function DevAdmin() {
       </div>
       
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-        <button onClick={() => setActiveTab('artworks')} style={{ padding: '0.5rem 1rem', background: activeTab==='artworks'?'#000':'#eee', color: activeTab==='artworks'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Artworks</button>
-        <button onClick={() => setActiveTab('blogs')} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Journal</button>
+        <button onClick={() => {setActiveTab('artworks'); setEditingArtwork(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='artworks'?'#000':'#eee', color: activeTab==='artworks'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Artworks</button>
+        <button onClick={() => {setActiveTab('blogs'); setEditingBlog(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Journal</button>
       </div>
 
       {activeTab === 'artworks' && (
@@ -144,28 +168,36 @@ export default function DevAdmin() {
             <h3>Current Artworks</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               {(data.artworks || []).map(a => (
-                <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px' }}>
-                  <span>{a.title}</span>
-                  <button onClick={() => handleDeleteArtwork(a.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
+                <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingArtwork?.id === a.id ? '2px solid black' : 'none' }}>
+                  <span>{a.title} {a.date && <span style={{color: 'gray', fontSize:'0.8em'}}>({a.date})</span>}</span>
+                  <div>
+                    <button onClick={() => setEditingArtwork(a)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
+                    <button onClick={() => handleDeleteArtwork(a.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
           <div>
-            <h3>Add New Artwork</h3>
-            <form onSubmit={handleAddArtwork} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-              <input name="title" placeholder="Title" required style={{ padding: '0.5rem' }} />
-              <input name="medium" placeholder="Medium (e.g., Oil on Canvas)" required style={{ padding: '0.5rem' }} />
-              <textarea name="description" placeholder="Description..." style={{ padding: '0.5rem', minHeight: '100px' }}></textarea>
+            <h3>{editingArtwork ? 'Edit Artwork' : 'Add New Artwork'}</h3>
+            {editingArtwork && <button onClick={() => setEditingArtwork(null)} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
+            
+            <form key={editingArtwork ? editingArtwork.id : 'new'} onSubmit={handleSaveArtwork} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+              <input name="title" defaultValue={editingArtwork?.title || ''} placeholder="Title" required style={{ padding: '0.5rem' }} />
+              <input name="medium" defaultValue={editingArtwork?.medium || ''} placeholder="Medium (e.g., Oil on Canvas)" required style={{ padding: '0.5rem' }} />
+              <input name="date" type="date" defaultValue={editingArtwork?.date || ''} placeholder="Completed Date" style={{ padding: '0.5rem' }} />
+              <textarea name="description" defaultValue={editingArtwork?.description || ''} placeholder="Description..." style={{ padding: '0.5rem', minHeight: '100px' }}></textarea>
               <div>
                 <label>Upload Image:</label><br/>
                 <input type="file" name="imgFile" accept="image/*" />
               </div>
               <div>
-                <label>OR Image URL (if existing):</label><br/>
-                <input name="imgText" placeholder="/uploads/..." style={{ padding: '0.5rem', width: '100%' }} />
+                <label>OR Existing Image URL:</label><br/>
+                <input name="imgText" defaultValue={editingArtwork?.img || ''} placeholder="/uploads/..." style={{ padding: '0.5rem', width: '100%' }} />
               </div>
-              <button type="submit" style={{ padding: '0.5rem', background: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>Add Artwork</button>
+              <button type="submit" style={{ padding: '0.5rem', background: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>
+                {editingArtwork ? 'Save Artwork' : 'Add Artwork'}
+              </button>
             </form>
           </div>
         </div>
@@ -177,25 +209,33 @@ export default function DevAdmin() {
             <h3>Current Journal Posts</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               {(data.blogs || []).map(b => (
-                <div key={b.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px' }}>
+                <div key={b.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingBlog?.id === b.id ? '2px solid black' : 'none' }}>
                   <span>{b.title}</span>
-                  <button onClick={() => handleDeleteBlog(b.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
+                  <div>
+                    <button onClick={() => setEditingBlog(b)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
+                    <button onClick={() => handleDeleteBlog(b.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
           <div>
-            <h3>Add New Post</h3>
-            <form onSubmit={handleAddBlog} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-              <input name="title" placeholder="Post Title" required style={{ padding: '0.5rem' }} />
-              <textarea name="excerpt" placeholder="Short excerpt summary..." required style={{ padding: '0.5rem' }}></textarea>
-              <textarea name="content" placeholder="Full blog content..." required style={{ padding: '0.5rem', minHeight: '150px' }}></textarea>
+            <h3>{editingBlog ? 'Edit Post' : 'Add New Post'}</h3>
+            {editingBlog && <button onClick={() => setEditingBlog(null)} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
+
+            <form key={editingBlog ? editingBlog.id : 'new'} onSubmit={handleSaveBlog} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+              <input name="title" defaultValue={editingBlog?.title || ''} placeholder="Post Title" required style={{ padding: '0.5rem' }} />
+              <input name="date" type="date" defaultValue={editingBlog?.date || ''} required style={{ padding: '0.5rem' }} />
+              <textarea name="excerpt" defaultValue={editingBlog?.excerpt || ''} placeholder="Short excerpt summary..." required style={{ padding: '0.5rem' }}></textarea>
+              <textarea name="content" defaultValue={editingBlog?.content || ''} placeholder="Full blog content..." required style={{ padding: '0.5rem', minHeight: '150px' }}></textarea>
               <div>
                 <label>Upload Cover Image:</label><br/>
                 <input type="file" name="coverFile" accept="image/*" />
               </div>
-              <div><label>OR Existing Cover URL:</label><br/><input name="coverText" placeholder="/uploads/..." style={{ padding: '0.5rem', width: '100%' }} /></div>
-              <button type="submit" style={{ padding: '0.5rem', background: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>Add Post</button>
+              <div><label>OR Existing Cover URL:</label><br/><input name="coverText" defaultValue={editingBlog?.cover || ''} placeholder="/uploads/..." style={{ padding: '0.5rem', width: '100%' }} /></div>
+              <button type="submit" style={{ padding: '0.5rem', background: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>
+                {editingBlog ? 'Save Post' : 'Add Post'}
+              </button>
             </form>
           </div>
         </div>

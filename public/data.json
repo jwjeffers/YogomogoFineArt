@@ -11,22 +11,11 @@
   ],
   "artworks": [
     {
-      "title": "Geometry in Warmth",
-      "img": "/uploads/painting1.png",
-      "medium": "Oil on Canvas, 24x36",
-      "id": "1"
-    },
-    {
-      "title": "Abstract Terracotta",
-      "img": "/uploads/painting2.png",
-      "medium": "Oil on Panel, 18x24",
-      "id": "2"
-    },
-    {
-      "title": "Minimalist Vase",
-      "img": "/uploads/painting3.png",
-      "medium": "Oil on Canvas, 30x40",
-      "id": "3"
+      "id": "1776137364711",
+      "title": "asd",
+      "medium": "asd",
+      "description": "ad",
+      "img": ""
     }
   ]
 }
