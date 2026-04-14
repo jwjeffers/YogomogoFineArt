@@ -16,11 +16,11 @@ export default function Sidebar({ currentRoute, setRoute, handleArtworkClick }) 
         onClick={() => setRoute('gallery')} 
         style={{ fontSize: '1.4rem', fontWeight: '700', letterSpacing: '-0.02em', cursor: 'pointer', marginBottom: '4rem' }}
       >
-        YOGOMOGO ART
+        JACKSON JEFFERS FINE ART
       </h1>
       
       <div style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--color-text-main)', marginBottom: '1.5rem', letterSpacing: '0.05em' }}>
-        ALL PROJECTS <sup>({artworks.length})</sup>
+        WORK <sup>({artworks.length})</sup>
       </div>
       
       <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.85rem', fontWeight: '500', color: 'var(--color-text-muted)' }}>
