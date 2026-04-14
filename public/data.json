@@ -1,15 +1,4 @@
 {
   "blogs": [],
-  "artworks": [
-    {
-      "id": "1776143483489",
-      "title": "xcvbb",
-      "medium": "sdfsdf",
-      "description": "sdf",
-      "date": "",
-      "img": "/uploads/1776143483468-Screenshot 2024-09-29 201049.png",
-      "sold": true,
-      "available": false
-    }
-  ]
+  "artworks": []
 }
