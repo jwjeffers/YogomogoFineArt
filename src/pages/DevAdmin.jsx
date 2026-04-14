@@ -4,6 +4,7 @@ export default function DevAdmin() {
   const [data, setData] = useState({ artworks: [], blogs: [] });
   const [isLocal, setIsLocal] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [publishing, setPublishing] = useState(false);
 
   // Form states
   const [activeTab, setActiveTab] = useState('artworks');
@@ -45,6 +46,20 @@ export default function DevAdmin() {
     const res = await fetch('/api/upload', { method: 'POST', body: formData });
     const { url } = await res.json();
     return url;
+  };
+
+  const handlePublish = async () => {
+    if (!window.confirm("Send all changes live to Vercel? This takes about 30 seconds to reflect online.")) return;
+    setPublishing(true);
+    try {
+      const res = await fetch('/api/publish', { method: 'POST' });
+      const result = await res.json();
+      if (result.success) alert("Successfully sent! Vercel is now building your site update online.");
+      else alert("Failed: " + result.error);
+    } catch (e) {
+      alert("Error triggered during publish.");
+    }
+    setPublishing(false);
   };
 
   const handleAddArtwork = async (e) => {
@@ -107,7 +122,16 @@ export default function DevAdmin() {
 
   return (
     <div className="page container" style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
-      <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Dev Mode Dashboard</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '2.5rem' }}>Dev Mode Dashboard</h1>
+        <button 
+          onClick={handlePublish} 
+          disabled={publishing}
+          style={{ padding: '0.8rem 2rem', background: '#000', color: '#fff', borderRadius: '30px', border: 'none', cursor: publishing ? 'not-allowed' : 'pointer', fontSize: '1rem', fontWeight: 'bold' }}
+        >
+          {publishing ? 'Publishing...' : 'Upload to Live Website (Vercel)'}
+        </button>
+      </div>
       
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
         <button onClick={() => setActiveTab('artworks')} style={{ padding: '0.5rem 1rem', background: activeTab==='artworks'?'#000':'#eee', color: activeTab==='artworks'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Artworks</button>

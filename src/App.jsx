@@ -10,7 +10,8 @@ import BlogPost from './pages/BlogPost';
 import DevAdmin from './pages/DevAdmin';
 
 function App() {
-  const [route, setRoute] = useState('home');
+  const isDevUrl = window.location.search.includes('dev');
+  const [route, setRoute] = useState(isDevUrl ? 'dev' : 'home');
   const [activeArtwork, setActiveArtwork] = useState(null);
   const [activeBlogId, setActiveBlogId] = useState(null);
 

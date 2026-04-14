@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
+import { exec } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,6 +37,17 @@ app.post('/api/data', (req, res) => {
 app.post('/api/upload', upload.single('image'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
   res.json({ url: '/uploads/' + req.file.filename });
+});
+
+app.post('/api/publish', (req, res) => {
+  exec('git add . && git commit -m "Auto-publish from dashboard" && git push', (error, stdout, stderr) => {
+    // If it fails with "nothing to commit", we still consider it a success.
+    if (error && !stdout.includes('nothing to commit')) {
+      console.error(error);
+      return res.status(500).json({ success: false, error: stderr || stdout });
+    }
+    res.json({ success: true, message: "Published successfully!" });
+  });
 });
 
 app.listen(3001, () => console.log('Dev server running on http://localhost:3001'));
