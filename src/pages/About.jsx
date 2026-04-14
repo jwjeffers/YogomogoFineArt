@@ -37,10 +37,10 @@ export default function About() {
       <div style={{ background: '#fff', padding: '3rem', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)' }}>
         <h3 style={{ marginBottom: '1rem', color: 'var(--color-text-main)' }}>Jackson Jeffers</h3>
         <p style={{ marginBottom: '1.5rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
-          I am an oil painter inspired by the comfort of modern life and the intrigue of classical realism. My work dances between vivid still lifes and abstract explorations of warm, inviting colors.
+          Jackson Jeffers is a contemporary oil painter based in Raleigh, NC. His work explores the intersection of classical realism and modern fantasy, utilizing traditional techniques to craft deeply atmospheric compositions.
         </p>
         <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '4rem' }}>
-          Through my art, I aim to create pieces that not only capture the eye but provide a sense of peace and modern comfort to any environment they inhabit.
+          Driven by a desire to create environments of visual peace, his paintings balance rich color palettes with nuanced lighting. He is currently focused on an ongoing study of fine art still life, figurative work, and illustration.
         </p>
         
         <div style={{ borderTop: '1px solid #eaeaea', paddingTop: '2rem' }}>
@@ -91,3 +91,4 @@ export default function About() {
     </div>
   );
 }
+
