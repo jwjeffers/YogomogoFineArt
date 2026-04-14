@@ -58,8 +58,9 @@ button { font-family: var(--font-sans); border: none; background: none; cursor: 
 .artwork-hover-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.65);
+  background: transparent;
   color: #fff;
+  text-shadow: 0px 2px 8px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -71,3 +72,4 @@ button { font-family: var(--font-sans); border: none; background: none; cursor: 
 .artwork-card:hover .artwork-hover-overlay {
   opacity: 1;
 }
+
