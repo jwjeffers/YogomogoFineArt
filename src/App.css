@@ -1,1 +1,35 @@
-/* Replaced */
+.split-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 380px;
+  flex-shrink: 0;
+  height: 100vh;
+  background-color: var(--color-bg-left);
+  padding: 3rem 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-panel {
+  flex-grow: 1;
+  height: 100vh;
+  background-color: var(--color-bg-right);
+  overflow-y: auto;
+  position: relative;
+  padding: 1rem;
+}
+
+.main-panel::-webkit-scrollbar, .sidebar::-webkit-scrollbar { width: 6px; }
+.main-panel::-webkit-scrollbar-thumb, .sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+@media (max-width: 768px) {
+  .split-layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; padding: 2rem; max-height: 40vh; }
+  .main-panel { height: 60vh; }
+}

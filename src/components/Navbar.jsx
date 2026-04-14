@@ -1,17 +1,12 @@
 import React from 'react';
-import './Navbar.css';
 
 export default function Navbar({ currentRoute, setRoute }) {
   return (
-    <nav className="navbar">
-      <div className="logo" onClick={() => setRoute('home')}>
-        Yogomogo Art
-      </div>
-      <ul className="nav-links">
-        <li className={currentRoute === 'home' ? 'active' : ''} onClick={() => setRoute('home')}>Home</li>
-        <li className={currentRoute === 'gallery' ? 'active' : ''} onClick={() => setRoute('gallery')}>Gallery</li>
-        <li className={currentRoute === 'blog' ? 'active' : ''} onClick={() => setRoute('blog')}>Journal</li>
-        <li className={currentRoute === 'about' ? 'active' : ''} onClick={() => setRoute('about')}>About</li>
+    <nav style={{ position: 'absolute', top: '3rem', right: '3rem', zIndex: 10 }}>
+      <ul style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem', fontWeight: '500', letterSpacing: '0.05em' }}>
+        <li style={{ cursor: 'pointer', color: currentRoute === 'home' || currentRoute === 'gallery' ? 'var(--color-text-main)' : 'var(--color-text-muted)' }} onClick={() => setRoute('gallery')}>PROJECTS</li>
+        <li style={{ cursor: 'pointer', color: currentRoute === 'blog' ? 'var(--color-text-main)' : 'var(--color-text-muted)' }} onClick={() => setRoute('blog')}>JOURNAL</li>
+        <li style={{ cursor: 'pointer', color: currentRoute === 'about' ? 'var(--color-text-main)' : 'var(--color-text-muted)' }} onClick={() => setRoute('about')}>ABOUT</li>
       </ul>
     </nav>
   );
