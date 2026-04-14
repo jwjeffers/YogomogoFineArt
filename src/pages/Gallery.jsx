@@ -17,19 +17,20 @@ export default function Gallery({ onArtworkDoubleClick }) {
     <div style={{ paddingTop: '8rem', paddingBottom: '4rem', paddingRight: '2rem' }}>
       <div className="masonry-grid">
         {artworks.map(art => (
-          <img 
-            key={art.id} 
-            src={art.img} 
-            alt={art.title} 
-            onDoubleClick={() => onArtworkDoubleClick(art)}
-            style={{ 
-              width: '100%', 
-              marginBottom: '1rem', 
-              breakInside: 'avoid', 
-              cursor: 'pointer',
-              display: 'block'
-            }} 
-          />
+          <div key={art.id} className="artwork-card" onDoubleClick={() => onArtworkDoubleClick(art)}>
+            <img src={art.img} alt={art.title} />
+            
+            <div className="artwork-hover-overlay">
+              <span style={{ fontSize: '1.4rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '0.4rem', lineHeight: '1.2' }}>{art.title}</span>
+              <span style={{ fontSize: '0.9rem', textAlign: 'center', color: '#ccc', letterSpacing: '0.05em' }}>{art.medium}</span>
+            </div>
+
+            {art.sold && (
+              <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', color: '#fff', fontSize: '0.8rem', fontWeight: 'bold', letterSpacing: '0.1em', background: 'transparent' }}>
+                SOLD
+              </div>
+            )}
+          </div>
         ))}
       </div>
     </div>
