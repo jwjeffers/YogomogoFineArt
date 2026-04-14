@@ -7,7 +7,7 @@ export default function Navbar({ currentRoute, setRoute }) {
         <li style={{ cursor: 'pointer', color: currentRoute === 'home' || currentRoute === 'gallery' ? 'var(--color-text-main)' : 'var(--color-text-muted)' }} onClick={() => setRoute('gallery')}>PROJECTS</li>
         <li style={{ cursor: 'pointer', color: currentRoute === 'blog' ? 'var(--color-text-main)' : 'var(--color-text-muted)' }} onClick={() => setRoute('blog')}>STUDIO NOTES</li>
         <li style={{ cursor: 'pointer', color: currentRoute === 'about' ? 'var(--color-text-main)' : 'var(--color-text-muted)' }} onClick={() => setRoute('about')}>ABOUT</li>
-        <li style={{ cursor: 'pointer', color: 'var(--color-text-muted)' }}><a href="https://instagram.com/" target="_blank" rel="noreferrer" style={{color: 'inherit', textDecoration: 'none'}}>INSTAGRAM</a></li>
+        <li style={{ cursor: 'pointer', color: 'var(--color-text-muted)' }}><a href="https://www.instagram.com/jacksonjeffersart/" target="_blank" rel="noreferrer" style={{color: 'inherit', textDecoration: 'none'}}>INSTAGRAM</a></li>
       </ul>
     </nav>
   );
