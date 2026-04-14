@@ -11,11 +11,13 @@
   ],
   "artworks": [
     {
-      "id": "1776137364711",
-      "title": "asd",
-      "medium": "asd",
-      "description": "ad",
-      "img": ""
+      "id": "1776140029183",
+      "title": "adfasdf",
+      "medium": "adfs",
+      "description": "adsfadfdfas",
+      "date": "2026-04-14",
+      "img": "/uploads/1776140029166-IMG_3464.jpg",
+      "available": true
     }
   ]
 }
