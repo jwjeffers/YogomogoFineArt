@@ -9,6 +9,8 @@ export default function DevAdmin() {
   const [activeTab, setActiveTab] = useState('artworks');
   const [editingArtwork, setEditingArtwork] = useState(null);
   const [editingBlog, setEditingBlog] = useState(null);
+  const [blogImages, setBlogImages] = useState([]);
+  const [uploadingExtra, setUploadingExtra] = useState(false);
   
   useEffect(() => {
     fetch('/api/data')
@@ -47,6 +49,19 @@ export default function DevAdmin() {
     const res = await fetch('/api/upload', { method: 'POST', body: formData });
     const { url } = await res.json();
     return url;
+  };
+
+  const handleExtraImageUpload = async (e) => {
+    if (!e.target.files[0]) return;
+    setUploadingExtra(true);
+    try {
+      const url = await uploadImage(e.target.files[0]);
+      setBlogImages(prev => [...prev, url]);
+    } catch (err) {
+      alert("Failed to upload image.");
+    }
+    setUploadingExtra(false);
+    e.target.value = null;
   };
 
   const handlePublish = async () => {
@@ -112,7 +127,8 @@ export default function DevAdmin() {
       date: form.date.value || new Date().toISOString().split('T')[0],
       excerpt: form.excerpt.value,
       content: form.content.value,
-      cover: coverUrl
+      cover: coverUrl,
+      images: blogImages
     };
     
     let newBlogs = [...data.blogs];
@@ -125,13 +141,14 @@ export default function DevAdmin() {
     
     await saveData({ ...data, blogs: newBlogs });
     setEditingBlog(null);
+    setBlogImages([]);
     form.reset();
   };
 
   const handleDeleteBlog = async (id) => {
-    if (!window.confirm("Delete this post?")) return;
+    if (!window.confirm("Delete this note?")) return;
     await saveData({ ...data, blogs: data.blogs.filter(b => b.id !== id) });
-    if (editingBlog && editingBlog.id === id) setEditingBlog(null);
+    if (editingBlog && editingBlog.id === id) { setEditingBlog(null); setBlogImages([]); }
   };
 
   if (loading) return <div className="page container" style={{paddingTop: '8rem'}}>Loading config...</div>;
@@ -160,7 +177,7 @@ export default function DevAdmin() {
       
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
         <button onClick={() => {setActiveTab('artworks'); setEditingArtwork(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='artworks'?'#000':'#eee', color: activeTab==='artworks'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Artworks</button>
-        <button onClick={() => {setActiveTab('blogs'); setEditingBlog(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Studio Notes</button>
+        <button onClick={() => {setActiveTab('blogs'); setEditingBlog(null); setBlogImages([]);}} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Studio Notes</button>
       </div>
 
       {activeTab === 'artworks' && (
@@ -219,7 +236,7 @@ export default function DevAdmin() {
                 <div key={b.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingBlog?.id === b.id ? '2px solid black' : 'none' }}>
                   <span>{b.title}</span>
                   <div>
-                    <button onClick={() => setEditingBlog(b)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
+                    <button onClick={() => {setEditingBlog(b); setBlogImages(b.images || []);}} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
                     <button onClick={() => handleDeleteBlog(b.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
                   </div>
                 </div>
@@ -227,21 +244,39 @@ export default function DevAdmin() {
             </div>
           </div>
           <div>
-            <h3>{editingBlog ? 'Edit Post' : 'Add New Post'}</h3>
-            {editingBlog && <button onClick={() => setEditingBlog(null)} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
+            <h3>{editingBlog ? 'Edit Note' : 'Add New Note'}</h3>
+            {editingBlog && <button onClick={() => {setEditingBlog(null); setBlogImages([]);}} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
 
-            <form key={editingBlog ? editingBlog.id : 'new'} onSubmit={handleSaveBlog} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-              <input name="title" defaultValue={editingBlog?.title || ''} placeholder="Post Title" required style={{ padding: '0.5rem' }} />
+            <form key={editingBlog ? editingBlog.id : 'new'} onSubmit={handleSaveBlog} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem', paddingBottom: '2rem' }}>
+              <input name="title" defaultValue={editingBlog?.title || ''} placeholder="Note Title" required style={{ padding: '0.5rem' }} />
               <input name="date" type="date" defaultValue={editingBlog?.date || ''} required style={{ padding: '0.5rem' }} />
               <textarea name="excerpt" defaultValue={editingBlog?.excerpt || ''} placeholder="Short excerpt summary..." required style={{ padding: '0.5rem' }}></textarea>
-              <textarea name="content" defaultValue={editingBlog?.content || ''} placeholder="Full blog content..." required style={{ padding: '0.5rem', minHeight: '150px' }}></textarea>
-              <div>
-                <label>Upload Cover Image:</label><br/>
+              <textarea name="content" defaultValue={editingBlog?.content || ''} placeholder="Full content..." required style={{ padding: '0.5rem', minHeight: '150px' }}></textarea>
+              
+              <div style={{ borderTop: '1px solid #ddd', paddingTop: '1rem' }}>
+                <label>Upload Cover Image (Thumbnail):</label><br/>
                 <input type="file" name="coverFile" accept="image/*" />
+                <br/><label style={{fontSize: '0.8rem', color: 'gray'}}>OR Existing Cover URL:</label><br/>
+                <input name="coverText" defaultValue={editingBlog?.cover || ''} placeholder="/uploads/..." style={{ padding: '0.5rem', width: '100%' }} />
               </div>
-              <div><label>OR Existing Cover URL:</label><br/><input name="coverText" defaultValue={editingBlog?.cover || ''} placeholder="/uploads/..." style={{ padding: '0.5rem', width: '100%' }} /></div>
-              <button type="submit" style={{ padding: '0.5rem', background: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>
-                {editingBlog ? 'Save Post' : 'Add Post'}
+
+              <div style={{ borderTop: '1px solid #ddd', paddingTop: '1rem' }}>
+                <label>Additional Masonry Gallery Images:</label><br/>
+                <input type="file" accept="image/*" onChange={handleExtraImageUpload} disabled={uploadingExtra} />
+                {uploadingExtra && <span style={{marginLeft: '1rem', fontSize: '0.85em', color: 'blue'}}>Uploading array...</span>}
+                
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+                  {blogImages.map((img, i) => (
+                    <div key={i} style={{position: 'relative', border: '1px solid #ccc', padding: '2px'}}>
+                      <img src={img} style={{width: '80px', height: '80px', objectFit: 'cover'}} />
+                      <button type="button" onClick={() => setBlogImages(prev => prev.filter((_, idx) => idx !== i))} style={{position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', borderRadius: '50%', width: '20px', height: '20px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px'}}>&times;</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <button type="submit" style={{ padding: '1rem', background: '#000', color: '#fff', border: 'none', cursor: 'pointer', marginTop: '1rem' }}>
+                {editingBlog ? 'Save Note' : 'Add Note'}
               </button>
             </form>
           </div>
