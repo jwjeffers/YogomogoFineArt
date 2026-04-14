@@ -16,7 +16,7 @@ export default function Sidebar({ currentRoute, setRoute, handleArtworkClick }) 
         onClick={() => setRoute('gallery')} 
         style={{ fontSize: '1.4rem', fontWeight: '700', letterSpacing: '-0.02em', cursor: 'pointer', marginBottom: '4rem' }}
       >
-        JACKSON JEFFERS FINE ART
+        JACKSON JEFFERS STUDIO
       </h1>
       
       <div style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--color-text-main)', marginBottom: '1.5rem', letterSpacing: '0.05em' }}>
