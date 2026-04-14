@@ -1,15 +1,15 @@
-﻿import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ArtCard from '../components/ArtCard';
-import p1 from '../assets/painting1.png';
-import p2 from '../assets/painting2.png';
-import p3 from '../assets/painting3.png';
 
 export default function Gallery({ onArtworkDoubleClick }) {
-  const artworks = [
-    { id: 1, img: p1, title: "Geometry in Warmth", medium: "Oil on Canvas, 24x36" },
-    { id: 2, img: p2, title: "Abstract Terracotta", medium: "Oil on Panel, 18x24" },
-    { id: 3, img: p3, title: "Minimalist Vase", medium: "Oil on Canvas, 30x40" }
-  ];
+  const [artworks, setArtworks] = useState([]);
+
+  useEffect(() => {
+    fetch('/data.json')
+      .then(r => r.json())
+      .then(data => setArtworks(data.artworks || []))
+      .catch(e => console.error("Could not load data.json", e));
+  }, []);
 
   return (
     <div className="page animate-fade-in container" style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
