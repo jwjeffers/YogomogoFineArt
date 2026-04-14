@@ -8,7 +8,8 @@
       "description": "sdf",
       "date": "",
       "img": "/uploads/1776143483468-Screenshot 2024-09-29 201049.png",
-      "available": true
+      "sold": true,
+      "available": false
     }
   ]
 }

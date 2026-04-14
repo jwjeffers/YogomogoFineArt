@@ -96,8 +96,8 @@ export default function DevAdmin() {
       description: form.description.value,
       date: form.date.value,
       img: imgUrl,
-      sold: form.sold.checked,
-      available: form.sold.checked ? false : form.available.checked
+      sold: form.status.value === 'sold',
+      available: form.status.value === 'available'
     };
     
     let newArtworks = [...data.artworks];
@@ -192,7 +192,7 @@ export default function DevAdmin() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               {(data.artworks || []).map(a => (
                 <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingArtwork?.id === a.id ? '2px solid black' : 'none' }}>
-                  <span>{a.title} {a.sold ? <strong style={{color: '#900', fontSize:'0.8em'}}>[Sold]</strong> : (a.available && <strong style={{color: 'green', fontSize:'0.8em'}}>[For Sale]</strong>)}</span>
+                  <span>{a.title} <strong style={{color: a.sold ? '#900' : (a.available ? 'green' : 'gray'), fontSize:'0.8em'}}>[{a.sold ? 'Sold' : (a.available ? 'For Sale' : 'NFS')}]</strong></span>
                   <div>
                     <button onClick={() => setEditingArtwork(a)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
                     <button onClick={() => handleDeleteArtwork(a.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
@@ -211,15 +211,14 @@ export default function DevAdmin() {
               <input name="date" type="date" defaultValue={editingArtwork?.date || ''} placeholder="Completed Date" style={{ padding: '0.5rem' }} />
               <textarea name="description" defaultValue={editingArtwork?.description || ''} placeholder="Description..." style={{ padding: '0.5rem', minHeight: '100px' }}></textarea>
               
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0', fontWeight: 'bold', color: '#900' }}>
-                <input name="sold" type="checkbox" defaultChecked={editingArtwork ? editingArtwork.sold : false} onChange={(e) => { if (e.target.checked && e.target.form.available) e.target.form.available.checked = false; }} />
-                Mark as Sold (Disables Inquiries)
-              </label>
-
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0', fontWeight: 'bold' }}>
-                <input name="available" type="checkbox" defaultChecked={editingArtwork ? editingArtwork.available : false} onChange={(e) => { if (e.target.checked && e.target.form.sold) e.target.form.sold.checked = false; }} />
-                Available for Purchase (Triggers Sales Button)
-              </label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.5rem 0' }}>
+                <label style={{ fontWeight: 'bold' }}>Artwork Status:</label>
+                <select name="status" defaultValue={editingArtwork ? (editingArtwork.sold ? 'sold' : (editingArtwork.available ? 'available' : 'nfs')) : 'available'} style={{ padding: '0.5rem' }}>
+                  <option value="available">Available for Purchase (Triggers Sales Form)</option>
+                  <option value="sold">Marked as Sold (Shows Sold Tag)</option>
+                  <option value="nfs">Not For Sale / Archive (View Only)</option>
+                </select>
+              </div>
 
               <div>
                 <label>Upload Image:</label><br/>
@@ -295,5 +294,6 @@ export default function DevAdmin() {
     </div>
   );
 }
+
 
 
