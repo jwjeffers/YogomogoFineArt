@@ -7,6 +7,19 @@
       "excerpt": "taco taco",
       "content": "ipsum lorem taxco",
       "cover": "/uploads/1776136053096-IMG_3462.jpg"
+    },
+    {
+      "id": "1776142395396",
+      "title": "asd",
+      "date": "2026-04-16",
+      "excerpt": "ad",
+      "content": "ad",
+      "cover": "/uploads/1776142395382-Screenshot 2024-10-09 231004.png",
+      "images": [
+        "/uploads/1776142378137-Screenshot 2026-04-11 160732.png",
+        "/uploads/1776142381250-Screenshot 2024-09-20 133312.png",
+        "/uploads/1776142383925-Screenshot 2024-09-05 212122.png"
+      ]
     }
   ],
   "artworks": [

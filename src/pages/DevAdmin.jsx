@@ -52,13 +52,17 @@ export default function DevAdmin() {
   };
 
   const handleExtraImageUpload = async (e) => {
-    if (!e.target.files[0]) return;
+    if (!e.target.files || e.target.files.length === 0) return;
     setUploadingExtra(true);
+    let newUrls = [];
     try {
-      const url = await uploadImage(e.target.files[0]);
-      setBlogImages(prev => [...prev, url]);
+      for (let i = 0; i < e.target.files.length; i++) {
+        const url = await uploadImage(e.target.files[i]);
+        newUrls.push(url);
+      }
+      setBlogImages(prev => [...prev, ...newUrls]);
     } catch (err) {
-      alert("Failed to upload image.");
+      alert("Failed to upload one or more images.");
     }
     setUploadingExtra(false);
     e.target.value = null;
@@ -262,7 +266,7 @@ export default function DevAdmin() {
 
               <div style={{ borderTop: '1px solid #ddd', paddingTop: '1rem' }}>
                 <label>Additional Masonry Gallery Images:</label><br/>
-                <input type="file" accept="image/*" onChange={handleExtraImageUpload} disabled={uploadingExtra} />
+                <input type="file" accept="image/*" multiple onChange={handleExtraImageUpload} disabled={uploadingExtra} />
                 {uploadingExtra && <span style={{marginLeft: '1rem', fontSize: '0.85em', color: 'blue'}}>Uploading array...</span>}
                 
                 <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
@@ -285,3 +289,4 @@ export default function DevAdmin() {
     </div>
   );
 }
+
