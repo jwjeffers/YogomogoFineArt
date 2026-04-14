@@ -12,9 +12,9 @@ export default function Blog({ setRoute, setActiveBlogId }) {
 
   return (
     <div className="page animate-fade-in container" style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
-      <h1 style={{ fontSize: '3rem', marginBottom: '1rem', textAlign: 'center' }}>Journal</h1>
+      <h1 style={{ fontSize: '3rem', marginBottom: '1rem', textAlign: 'center' }}>Studio Notes</h1>
       <p style={{ textAlign: 'center', color: 'var(--color-text-muted)', marginBottom: '4rem' }}>
-        Thoughts, processes, and updates from the studio.
+        Thoughts, processes, and updates.
       </p>
 
       {blogs.length === 0 ? (
@@ -36,3 +36,4 @@ export default function Blog({ setRoute, setActiveBlogId }) {
     </div>
   );
 }
+
