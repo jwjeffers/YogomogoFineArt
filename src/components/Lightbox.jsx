@@ -61,7 +61,7 @@ export default function Lightbox({ artwork, onClose }) {
       </button>
 
       <div 
-        style={{ display: 'flex', maxWidth: '1400px', width: '100%', height: '80vh', gap: '4rem', flexDirection: window.innerWidth < 800 ? 'column' : 'row' }}
+        className="lightbox-content-wrapper" style={{ display: 'flex', maxWidth: '1400px', width: '100%', height: '80vh', gap: '4rem', flexDirection: 'row' }}
         onClick={e => e.stopPropagation()}
       >
         <div style={{ flex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>

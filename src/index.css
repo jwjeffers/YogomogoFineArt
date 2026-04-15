@@ -73,3 +73,13 @@ button { font-family: var(--font-sans); border: none; background: none; cursor: 
   opacity: 1;
 }
 
+
+@media (max-width: 800px) {
+  .lightbox-content-wrapper {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+}
