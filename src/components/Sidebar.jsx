@@ -22,9 +22,9 @@ export default function Sidebar({ currentRoute, setRoute, handleArtworkClick }) 
         {isOpen ? '?' : '?'}
       </button>
 
-      <div className={sidebar-overlay } onClick={() => setIsOpen(false)}></div>
+      <div className={`sidebar-overlay ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(false)}></div>
 
-      <aside className={sidebar }>
+      <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <h1 
           onClick={() => handleNavClick(() => setRoute('gallery'))} 
           style={{ fontSize: '1.4rem', fontWeight: '700', letterSpacing: '-0.02em', cursor: 'pointer', marginBottom: '4rem' }}
