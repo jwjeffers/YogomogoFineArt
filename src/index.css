@@ -140,3 +140,54 @@ button { font-family: var(--font-sans); border: none; background: none; cursor: 
     font-size: 0.75rem;
   }
 }
+
+/* Lightbox overrides for inquiry form */
+.lightbox-close-btn {
+  position: absolute;
+  top: 2.5rem;
+  right: 3.5rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  background: none;
+  border: none;
+  z-index: 10;
+}
+
+@media (max-width: 800px) {
+  .lightbox-content-wrapper {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    justify-content: flex-start !important;
+    padding-bottom: 2rem !important;
+  }
+  
+  .lightbox-right-column {
+    justify-content: flex-start !important;
+  }
+  
+  .lightbox-form-buttons {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  .lightbox-form-buttons button {
+    padding: 0.8rem !important;
+  }
+
+  .lightbox-close-btn {
+    top: 1rem !important;
+    right: 1.5rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  /* Give inputs less padding so they fit better vertically */
+  .lightbox-content-wrapper input, .lightbox-content-wrapper textarea {
+    padding: 0.5rem !important;
+  }
+}

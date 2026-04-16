@@ -68,7 +68,7 @@ export default function Lightbox({ artwork, onClose }) {
           <img src={artwork.img} alt={artwork.title} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
         </div>
         
-        <div style={{ flex: 1, color: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div className="lightbox-right-column" style={{ flex: 1, color: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           {isSuccess ? (
             <div style={{ textAlign: 'center' }}>
               <h3 style={{ fontSize: '2rem', fontWeight: '400', marginBottom: '1rem' }}>Sent Successfully.</h3>
@@ -100,10 +100,10 @@ export default function Lightbox({ artwork, onClose }) {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                 <label style={{ fontSize: '0.8rem', color: '#aaa' }}>Message</label>
-                <textarea name="message" required defaultValue={`I am writing to inquire about purchasing "${artwork.title}"...`} style={{ background: 'transparent', border: '1px solid #555', color: '#fff', padding: '0.8rem', minHeight: '120px', outline: 'none', resize: 'vertical' }}></textarea>
+                <textarea name="message" required defaultValue={`I am writing to inquire about purchasing "${artwork.title}"...`} style={{ background: 'transparent', border: '1px solid #555', color: '#fff', padding: '0.8rem', minHeight: '80px', outline: 'none', resize: 'vertical' }}></textarea>
               </div>
 
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+              <div className="lightbox-form-buttons" style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
