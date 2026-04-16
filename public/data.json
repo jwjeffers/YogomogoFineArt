@@ -1,4 +1,48 @@
 {
-  "blogs": [],
-  "artworks": []
+  "blogs": [
+    {
+      "id": "1776310421451",
+      "title": "ad",
+      "date": "2026-04-21",
+      "excerpt": "asdf",
+      "content": "ad",
+      "cover": "/uploads/1776310421435-Screenshot 2024-09-29 201049.png",
+      "images": [
+        "/uploads/1776310407838-Screenshot 2024-09-29 191729.png",
+        "/uploads/1776310407889-Screenshot 2024-09-29 193729.png",
+        "/uploads/1776310407981-Screenshot 2024-09-29 201049.png",
+        "/uploads/1776310408007-Screenshot 2024-09-29 201609.png",
+        "/uploads/1776310408046-Screenshot 2024-09-29 202359.png",
+        "/uploads/1776310408110-Screenshot 2024-09-29 203518.png",
+        "/uploads/1776310408179-Screenshot 2024-09-29 204257.png",
+        "/uploads/1776310408199-Screenshot 2024-09-30 131522.png",
+        "/uploads/1776310408272-Screenshot 2024-10-01 200433.png",
+        "/uploads/1776310408287-Screenshot 2024-10-01 203155.png",
+        "/uploads/1776310408304-Screenshot 2024-10-03 001953.png",
+        "/uploads/1776310408334-Screenshot 2024-10-05 230354.png",
+        "/uploads/1776310408398-Screenshot 2024-10-06 222230.png",
+        "/uploads/1776310408430-Screenshot 2024-10-09 231004.png",
+        "/uploads/1776310408461-Screenshot 2024-10-10 232300.png",
+        "/uploads/1776310408490-Screenshot 2024-10-10 232535.png",
+        "/uploads/1776310408554-Screenshot 2024-10-12 121559.png",
+        "/uploads/1776310408568-Screenshot 2024-10-13 215915.png",
+        "/uploads/1776310408604-Screenshot 2024-10-13 221946.png",
+        "/uploads/1776310408657-Screenshot 2024-10-15 084035.png",
+        "/uploads/1776310408735-Screenshot 2024-10-15 093120.png",
+        "/uploads/1776310408751-Screenshot 2024-10-15 093607.png"
+      ]
+    }
+  ],
+  "artworks": [
+    {
+      "id": "1776310432647",
+      "title": "asdf",
+      "medium": "ads",
+      "description": "asd",
+      "date": "2026-04-16",
+      "img": "/uploads/1776310432632-Screenshot 2024-10-15 093607.png",
+      "sold": false,
+      "available": true
+    }
+  ]
 }
