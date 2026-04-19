@@ -1,5 +1,8 @@
 {
   "name": "yogomogo-fineart",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
