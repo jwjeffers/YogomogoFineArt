@@ -1,4 +1,29 @@
 {
-  "blogs": [],
+  "blogs": [
+    {
+      "id": "1777149885386",
+      "title": "Palette Color Study",
+      "date": "2026-04-25",
+      "excerpt": "Titanium White + Color Study",
+      "content": "This was a Titanium White (PW6) color study on the majority of colors I like to use. The ratios are full color, 25% TW, 50% TW, 75% TW, and lastly mostly TW with a small amount of the associated color.",
+      "cover": "/uploads/1777149885374-IMG_3484.jpg",
+      "images": []
+    },
+    {
+      "id": "1777151566709",
+      "title": "Studies with Alia!",
+      "date": "2025-09-24 to 2026-04-30",
+      "startDate": "2025-09-24",
+      "endDate": "2026-04-30",
+      "excerpt": "A collection of many studies from classes with Alia El-Bermani",
+      "content": "Alia has been my teacher for fine art studies since the fall of 2024 and has taught me much of what I know now, starting with painting a near-life-size figure, drawing, anatomy, composition, materials, and overall exploration of the oil painting medium. Please check out her website at https://alia-fineart.com/.\n\nThis collection of studies is in no particular order, but I wish to document these for remembrance and appreciation of a fantastic teacher.",
+      "cover": "",
+      "images": [
+        "/uploads/1777151557539-CC8F7ECE-42DE-4502-AD1D-B2C38AFBBABD.jpg",
+        "/uploads/1777151558168-IMG_2994.jpg",
+        "/uploads/1777151558216-IMG_3004.jpg"
+      ]
+    }
+  ],
   "artworks": []
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Links.css';
-import heroImage from '../assets/hero.png';
+import heroImage from '../assets/links-profile.png';
 
 export default function Links() {
   return (

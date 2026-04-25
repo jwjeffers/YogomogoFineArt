@@ -11,6 +11,8 @@ export default function DevAdmin() {
   const [editingBlog, setEditingBlog] = useState(null);
   const [blogImages, setBlogImages] = useState([]);
   const [uploadingExtra, setUploadingExtra] = useState(false);
+  const [artworkMultipleDates, setArtworkMultipleDates] = useState(false);
+  const [blogMultipleDates, setBlogMultipleDates] = useState(false);
   
   useEffect(() => {
     fetch('/api/data')
@@ -94,7 +96,9 @@ export default function DevAdmin() {
       title: form.title.value,
       medium: form.medium.value,
       description: form.description.value,
-      date: form.date.value,
+      date: artworkMultipleDates ? `${form.startDate.value} to ${form.endDate.value}` : form.date.value,
+      startDate: artworkMultipleDates ? form.startDate.value : null,
+      endDate: artworkMultipleDates ? form.endDate.value : null,
       img: imgUrl,
       sold: form.status.value === 'sold',
       available: form.status.value === 'available'
@@ -116,7 +120,7 @@ export default function DevAdmin() {
   const handleDeleteArtwork = async (id) => {
     if (!window.confirm("Delete this artwork?")) return;
     await saveData({ ...data, artworks: data.artworks.filter(a => a.id !== id) });
-    if (editingArtwork && editingArtwork.id === id) setEditingArtwork(null);
+    if (editingArtwork && editingArtwork.id === id) { setEditingArtwork(null); setArtworkMultipleDates(false); }
   };
 
   const handleSaveBlog = async (e) => {
@@ -129,7 +133,9 @@ export default function DevAdmin() {
     const newBlog = {
       id: editingBlog ? editingBlog.id : Date.now().toString(),
       title: form.title.value,
-      date: form.date.value || new Date().toISOString().split('T')[0],
+      date: blogMultipleDates ? `${form.startDate.value} to ${form.endDate.value}` : (form.date.value || new Date().toISOString().split('T')[0]),
+      startDate: blogMultipleDates ? form.startDate.value : null,
+      endDate: blogMultipleDates ? form.endDate.value : null,
       excerpt: form.excerpt.value,
       content: form.content.value,
       cover: coverUrl,
@@ -153,7 +159,7 @@ export default function DevAdmin() {
   const handleDeleteBlog = async (id) => {
     if (!window.confirm("Delete this note?")) return;
     await saveData({ ...data, blogs: data.blogs.filter(b => b.id !== id) });
-    if (editingBlog && editingBlog.id === id) { setEditingBlog(null); setBlogImages([]); }
+    if (editingBlog && editingBlog.id === id) { setEditingBlog(null); setBlogImages([]); setBlogMultipleDates(false); }
   };
 
   if (loading) return <div className="page container" style={{paddingTop: '8rem'}}>Loading config...</div>;
@@ -181,8 +187,8 @@ export default function DevAdmin() {
       </div>
       
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-        <button onClick={() => {setActiveTab('artworks'); setEditingArtwork(null);}} style={{ padding: '0.5rem 1rem', background: activeTab==='artworks'?'#000':'#eee', color: activeTab==='artworks'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Artworks</button>
-        <button onClick={() => {setActiveTab('blogs'); setEditingBlog(null); setBlogImages([]);}} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Studio Notes</button>
+        <button onClick={() => {setActiveTab('artworks'); setEditingArtwork(null); setArtworkMultipleDates(false);}} style={{ padding: '0.5rem 1rem', background: activeTab==='artworks'?'#000':'#eee', color: activeTab==='artworks'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Artworks</button>
+        <button onClick={() => {setActiveTab('blogs'); setEditingBlog(null); setBlogImages([]); setBlogMultipleDates(false);}} style={{ padding: '0.5rem 1rem', background: activeTab==='blogs'?'#000':'#eee', color: activeTab==='blogs'?'#fff':'#000', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Manage Studio Notes</button>
       </div>
 
       {activeTab === 'artworks' && (
@@ -194,7 +200,7 @@ export default function DevAdmin() {
                 <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingArtwork?.id === a.id ? '2px solid black' : 'none' }}>
                   <span>{a.title} <strong style={{color: a.sold ? '#900' : (a.available ? 'green' : 'gray'), fontSize:'0.8em'}}>[{a.sold ? 'Sold' : (a.available ? 'For Sale' : 'NFS')}]</strong></span>
                   <div>
-                    <button onClick={() => setEditingArtwork(a)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
+                    <button onClick={() => { setEditingArtwork(a); setArtworkMultipleDates(!!a.startDate); }} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
                     <button onClick={() => handleDeleteArtwork(a.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
                   </div>
                 </div>
@@ -203,12 +209,25 @@ export default function DevAdmin() {
           </div>
           <div>
             <h3>{editingArtwork ? 'Edit Artwork' : 'Add New Artwork'}</h3>
-            {editingArtwork && <button onClick={() => setEditingArtwork(null)} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
+            {editingArtwork && <button onClick={() => { setEditingArtwork(null); setArtworkMultipleDates(false); }} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
             
             <form key={editingArtwork ? editingArtwork.id : 'new'} onSubmit={handleSaveArtwork} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               <input name="title" defaultValue={editingArtwork?.title || ''} placeholder="Title" required style={{ padding: '0.5rem' }} />
               <input name="medium" defaultValue={editingArtwork?.medium || ''} placeholder="Medium (e.g., Oil on Canvas)" required style={{ padding: '0.5rem' }} />
-              <input name="date" type="date" defaultValue={editingArtwork?.date || ''} placeholder="Completed Date" style={{ padding: '0.5rem' }} />
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <input type="checkbox" id="artMultiDate" checked={artworkMultipleDates} onChange={e => setArtworkMultipleDates(e.target.checked)} />
+                <label htmlFor="artMultiDate" style={{ fontSize: '0.9rem', cursor: 'pointer' }}>Multiple Dates (Start - End)</label>
+              </div>
+              {artworkMultipleDates ? (
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <input name="startDate" type="date" defaultValue={editingArtwork?.startDate || ''} required style={{ padding: '0.5rem', flex: 1 }} />
+                  <input name="endDate" type="date" defaultValue={editingArtwork?.endDate || ''} required style={{ padding: '0.5rem', flex: 1 }} />
+                </div>
+              ) : (
+                <input name="date" type="date" defaultValue={editingArtwork?.date || ''} placeholder="Completed Date" style={{ padding: '0.5rem' }} />
+              )}
+
               <textarea name="description" defaultValue={editingArtwork?.description || ''} placeholder="Description..." style={{ padding: '0.5rem', minHeight: '100px' }}></textarea>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.5rem 0' }}>
@@ -245,7 +264,7 @@ export default function DevAdmin() {
                 <div key={b.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingBlog?.id === b.id ? '2px solid black' : 'none' }}>
                   <span>{b.title}</span>
                   <div>
-                    <button onClick={() => {setEditingBlog(b); setBlogImages(b.images || []);}} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
+                    <button onClick={() => {setEditingBlog(b); setBlogImages(b.images || []); setBlogMultipleDates(!!b.startDate);}} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
                     <button onClick={() => handleDeleteBlog(b.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
                   </div>
                 </div>
@@ -254,11 +273,24 @@ export default function DevAdmin() {
           </div>
           <div>
             <h3>{editingBlog ? 'Edit Note' : 'Add New Note'}</h3>
-            {editingBlog && <button onClick={() => {setEditingBlog(null); setBlogImages([]);}} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
+            {editingBlog && <button onClick={() => {setEditingBlog(null); setBlogImages([]); setBlogMultipleDates(false);}} style={{ marginBottom: '1rem', color: 'gray', border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cancel Edit / Add New</button>}
 
             <form key={editingBlog ? editingBlog.id : 'new'} onSubmit={handleSaveBlog} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem', paddingBottom: '2rem' }}>
               <input name="title" defaultValue={editingBlog?.title || ''} placeholder="Note Title" required style={{ padding: '0.5rem' }} />
-              <input name="date" type="date" defaultValue={editingBlog?.date || ''} required style={{ padding: '0.5rem' }} />
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <input type="checkbox" id="blogMultiDate" checked={blogMultipleDates} onChange={e => setBlogMultipleDates(e.target.checked)} />
+                <label htmlFor="blogMultiDate" style={{ fontSize: '0.9rem', cursor: 'pointer' }}>Multiple Dates (Start - End)</label>
+              </div>
+              {blogMultipleDates ? (
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <input name="startDate" type="date" defaultValue={editingBlog?.startDate || ''} required style={{ padding: '0.5rem', flex: 1 }} />
+                  <input name="endDate" type="date" defaultValue={editingBlog?.endDate || ''} required style={{ padding: '0.5rem', flex: 1 }} />
+                </div>
+              ) : (
+                <input name="date" type="date" defaultValue={editingBlog?.date || ''} required style={{ padding: '0.5rem' }} />
+              )}
+
               <textarea name="excerpt" defaultValue={editingBlog?.excerpt || ''} placeholder="Short excerpt summary..." required style={{ padding: '0.5rem' }}></textarea>
               <textarea name="content" defaultValue={editingBlog?.content || ''} placeholder="Full content..." required style={{ padding: '0.5rem', minHeight: '150px' }}></textarea>
               

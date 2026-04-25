@@ -23,7 +23,7 @@ export default function Blog({ setRoute, setActiveBlogId }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', maxWidth: '800px', margin: '0 auto' }}>
           {blogs.map(blog => (
             <div key={blog.id} style={{ display: 'flex', gap: '2rem', cursor: 'pointer', background: '#fff', padding: '1.5rem', borderRadius: 'var(--radius-md)', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }} onClick={() => { setActiveBlogId(blog.id); setRoute('blogpost'); }}>
-              {blog.cover && <img src={blog.cover} alt={blog.title} style={{ width: '200px', height: '150px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />}
+              {blog.cover && <img src={blog.cover} alt={blog.title} style={{ width: '200px', height: '150px', objectFit: 'contain', borderRadius: 'var(--radius-sm)' }} />}
               <div>
                 <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>{blog.date}</p>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{blog.title}</h3>

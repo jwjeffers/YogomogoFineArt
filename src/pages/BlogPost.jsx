@@ -22,6 +22,18 @@ export default function BlogPost({ blogId, onBack }) {
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
+  const renderTextWithLinks = (text) => {
+    if (!text) return null;
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
+    return parts.map((part, i) => {
+      if (part.match(/^https?:\/\//)) {
+        return <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 'bold' }}>{part}</a>;
+      }
+      return part;
+    });
+  };
+
   if (!blog) return null;
 
   const hasExtraImages = blog.images && blog.images.length > 0;
@@ -42,7 +54,7 @@ export default function BlogPost({ blogId, onBack }) {
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '3rem', fontWeight: '500' }}>{blog.date}</p>
             
             <div style={{ lineHeight: '1.8', fontSize: '1.1rem', whiteSpace: 'pre-wrap', color: '#333' }}>
-              {blog.content}
+              {renderTextWithLinks(blog.content)}
             </div>
           </div>
 
@@ -84,14 +96,14 @@ export default function BlogPost({ blogId, onBack }) {
               src={blog.cover} 
               alt={blog.title} 
               onClick={() => setExpandedImage(blog.cover)}
-              style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', borderRadius: 'var(--radius-sm)', marginBottom: '3rem', cursor: 'pointer' }} 
+              style={{ width: '100%', maxHeight: '500px', objectFit: 'contain', borderRadius: 'var(--radius-sm)', marginBottom: '3rem', cursor: 'pointer' }} 
             />
           )}
           <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>{blog.title}</h1>
           <p style={{ color: 'var(--color-text-muted)', marginBottom: '3rem' }}>{blog.date}</p>
           
           <div style={{ lineHeight: '1.8', fontSize: '1.1rem', whiteSpace: 'pre-wrap' }}>
-            {blog.content}
+            {renderTextWithLinks(blog.content)}
           </div>
         </div>
       )}
