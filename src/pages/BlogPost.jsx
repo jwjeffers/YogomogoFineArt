@@ -46,10 +46,10 @@ export default function BlogPost({ blogId, onBack }) {
       </button>
 
       {hasExtraImages ? (
-        <div style={{ display: 'flex', gap: '4rem', flexDirection: window.innerWidth < 1000 ? 'column' : 'row' }}>
+        <div className="masonry-grid" style={{ columnCount: window.innerWidth < 1000 ? 1 : 3, columnGap: '2rem' }}>
           
-          {/* Left Side: Text Content */}
-          <div style={{ flex: 1, maxWidth: '600px' }}>
+          {/* Text Content Block */}
+          <div style={{ breakInside: 'avoid', marginBottom: '2rem' }}>
             <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', lineHeight: '1.1' }}>{blog.title}</h1>
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '3rem', fontWeight: '500' }}>{blog.date}</p>
             
@@ -58,34 +58,33 @@ export default function BlogPost({ blogId, onBack }) {
             </div>
           </div>
 
-          {/* Right Side: Masonry Gallery */}
-          <div style={{ flex: 1.2 }}>
-            {blog.cover && (
-              <img 
-                src={blog.cover} 
-                alt="Cover" 
-                onClick={() => setExpandedImage(blog.cover)}
-                style={{ width: '100%', marginBottom: '1.5rem', display: 'block', cursor: 'pointer' }} 
-              />
-            )}
-            <div className="masonry-grid" style={{ columnCount: 2 }}>
-              {blog.images.map((imgUrl, i) => (
-                <img 
-                  key={i} 
-                  src={imgUrl} 
-                  alt={`${blog.title} detail ${i}`} 
-                  onClick={() => setExpandedImage(imgUrl)}
-                  style={{ 
-                    width: '100%', 
-                    marginBottom: '1rem', 
-                    breakInside: 'avoid', 
-                    display: 'block',
-                    cursor: 'pointer'
-                  }} 
-                />
-              ))}
-            </div>
-          </div>
+          {/* Cover Image */}
+          {blog.cover && (
+            <img 
+              src={blog.cover} 
+              alt="Cover" 
+              onClick={() => setExpandedImage(blog.cover)}
+              style={{ width: '100%', marginBottom: '2rem', breakInside: 'avoid', display: 'block', cursor: 'pointer', borderRadius: 'var(--radius-sm)' }} 
+            />
+          )}
+
+          {/* Masonry Gallery Images */}
+          {blog.images.map((imgUrl, i) => (
+            <img 
+              key={i} 
+              src={imgUrl} 
+              alt={`${blog.title} detail ${i}`} 
+              onClick={() => setExpandedImage(imgUrl)}
+              style={{ 
+                width: '100%', 
+                marginBottom: '2rem', 
+                breakInside: 'avoid', 
+                display: 'block',
+                cursor: 'pointer',
+                borderRadius: 'var(--radius-sm)'
+              }} 
+            />
+          ))}
           
         </div>
       ) : (
