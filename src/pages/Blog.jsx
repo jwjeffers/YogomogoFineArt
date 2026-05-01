@@ -4,7 +4,7 @@ export default function Blog({ setRoute, setActiveBlogId }) {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    fetch('/data.json')
+    fetch('/data.json?t=' + Date.now())
       .then(r => r.json())
       .then(data => setBlogs(data.blogs || []))
       .catch(e => console.error(e));

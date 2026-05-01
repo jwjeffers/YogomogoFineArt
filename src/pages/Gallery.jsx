@@ -5,7 +5,7 @@ export default function Gallery({ onArtworkDoubleClick }) {
 
   useEffect(() => {
     fetch('/api/data')
-      .then(r => r.ok ? r.json() : fetch('/data.json').then(r => r.json()))
+      .then(r => r.ok ? r.json() : fetch('/data.json?t=' + Date.now()).then(r => r.json()))
       .then(data => {
         const sorted = (data.artworks || []).sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
         setArtworks(sorted);

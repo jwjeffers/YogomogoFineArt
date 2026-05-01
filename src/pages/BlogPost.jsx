@@ -5,7 +5,7 @@ export default function BlogPost({ blogId, onBack }) {
   const [expandedImage, setExpandedImage] = useState(null);
 
   useEffect(() => {
-    fetch('/data.json')
+    fetch('/data.json?t=' + Date.now())
       .then(r => r.json())
       .then(data => {
         const found = (data.blogs || []).find(b => b.id === blogId);

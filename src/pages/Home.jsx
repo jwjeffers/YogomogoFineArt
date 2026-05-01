@@ -5,7 +5,7 @@ export default function Home({ setRoute, onArtworkDoubleClick }) {
   const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
-    fetch('/data.json')
+    fetch('/data.json?t=' + Date.now())
       .then(r => r.json())
       .then(data => setFeatured((data.artworks || []).slice(0, 2)))
       .catch(e => console.error(e));

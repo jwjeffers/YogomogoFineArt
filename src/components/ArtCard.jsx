@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import './ArtCard.css';
 
 export default function ArtCard({ img, title, medium, onDoubleClick }) {
