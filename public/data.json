@@ -119,6 +119,20 @@
       "img": "/uploads/1777598281094-IMG_3499.jpg",
       "sold": false,
       "available": false
+    },
+    {
+      "id": "1777605973516",
+      "title": "Coffee Creamer",
+      "medium": "Oil on ACM Panel",
+      "width": "16",
+      "height": "20",
+      "description": "A silver-plated coffee creamer situated in blue satin",
+      "date": "2025-01-01 to 2025-02-28",
+      "startDate": "2025-01-01",
+      "endDate": "2025-02-28",
+      "img": "/uploads/1777605973477-IMG_3068 - Copy.jpg",
+      "sold": false,
+      "available": true
     }
   ]
 }
