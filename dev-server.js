@@ -40,13 +40,19 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 });
 
 app.post('/api/publish', (req, res) => {
-  exec('git add . && git commit -m "Auto-publish from dashboard" && git push', (error, stdout, stderr) => {
-    // If it fails with "nothing to commit", we still consider it a success.
-    if (error && !stdout.includes('nothing to commit')) {
-      console.error(error);
-      return res.status(500).json({ success: false, error: stderr || stdout });
-    }
-    res.json({ success: true, message: "Published successfully!" });
+  exec('git add .', (err1) => {
+    if (err1) return res.status(500).json({ success: false, error: "git add failed" });
+    
+    exec('git commit -m "Auto-publish from dashboard"', (err2, stdout) => {
+      // It's okay if commit fails (e.g. nothing to commit)
+      exec('git push', (err3, stdout3, stderr3) => {
+        if (err3) {
+          console.error(err3);
+          return res.status(500).json({ success: false, error: "git push failed: " + (stderr3 || err3.message) });
+        }
+        res.json({ success: true, message: "Published successfully!" });
+      });
+    });
   });
 });
 
