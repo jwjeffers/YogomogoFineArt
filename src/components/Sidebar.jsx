@@ -46,6 +46,9 @@ export default function Sidebar({ currentRoute, setRoute, handleArtworkClick }) 
               onMouseOut={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
             >
               {art.title.toUpperCase()}
+              <span style={{ color: '#bbb', marginLeft: '0.5rem', fontSize: '0.7rem', fontWeight: 'normal' }}>
+                {art.sold ? 'SOLD' : (art.available ? 'AVAILABLE' : 'ARCHIVED')}
+              </span>
             </li>
           ))}
         </ul>

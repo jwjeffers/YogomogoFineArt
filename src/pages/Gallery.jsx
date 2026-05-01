@@ -22,14 +22,15 @@ export default function Gallery({ onArtworkDoubleClick }) {
             
             <div className="artwork-hover-overlay">
               <span style={{ fontSize: '1.4rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '0.4rem', lineHeight: '1.2' }}>{art.title}</span>
-              <span style={{ fontSize: '0.9rem', textAlign: 'center', color: '#ccc', letterSpacing: '0.05em' }}>{art.medium}</span>
+              <span style={{ fontSize: '0.9rem', textAlign: 'center', color: '#ccc', letterSpacing: '0.05em' }}>
+                {art.medium} {art.width && art.height ? `— ${art.width}" x ${art.height}"` : ''}
+              </span>
+              <span style={{ fontSize: '0.8rem', textAlign: 'center', color: '#fff', marginTop: '0.5rem', fontWeight: 'bold', letterSpacing: '0.1em' }}>
+                {art.sold ? 'SOLD' : (art.available ? 'AVAILABLE' : 'ARCHIVED')}
+              </span>
             </div>
 
-            {art.sold && (
-              <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', color: '#fff', fontSize: '0.8rem', fontWeight: 'bold', letterSpacing: '0.1em', background: 'transparent' }}>
-                SOLD
-              </div>
-            )}
+
           </div>
         ))}
       </div>

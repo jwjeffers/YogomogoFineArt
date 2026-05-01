@@ -95,6 +95,8 @@ export default function DevAdmin() {
       id: editingArtwork ? editingArtwork.id : Date.now().toString(),
       title: form.title.value,
       medium: form.medium.value,
+      width: form.width.value,
+      height: form.height.value,
       description: form.description.value,
       date: artworkMultipleDates ? `${form.startDate.value} to ${form.endDate.value}` : form.date.value,
       startDate: artworkMultipleDates ? form.startDate.value : null,
@@ -215,6 +217,18 @@ export default function DevAdmin() {
               <input name="title" defaultValue={editingArtwork?.title || ''} placeholder="Title" required style={{ padding: '0.5rem' }} />
               <input name="medium" defaultValue={editingArtwork?.medium || ''} placeholder="Medium (e.g., Oil on Canvas)" required style={{ padding: '0.5rem' }} />
               
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input name="width" type="number" step="any" defaultValue={editingArtwork?.width || ''} placeholder="Width" style={{ padding: '0.5rem', width: '100%' }} />
+                  <span>in</span>
+                </div>
+                <span style={{ display: 'flex', alignItems: 'center' }}>x</span>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input name="height" type="number" step="any" defaultValue={editingArtwork?.height || ''} placeholder="Height" style={{ padding: '0.5rem', width: '100%' }} />
+                  <span>in</span>
+                </div>
+              </div>
+
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <input type="checkbox" id="artMultiDate" checked={artworkMultipleDates} onChange={e => setArtworkMultipleDates(e.target.checked)} />
                 <label htmlFor="artMultiDate" style={{ fontSize: '0.9rem', cursor: 'pointer' }}>Multiple Dates (Start - End)</label>

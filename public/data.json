@@ -105,5 +105,20 @@
       ]
     }
   ],
-  "artworks": []
+  "artworks": [
+    {
+      "id": "1777595900481",
+      "title": "Peach Study",
+      "medium": "Oil on Hardboard",
+      "width": "8",
+      "height": "10",
+      "description": "Blair Atherholt Peach tutorial study",
+      "date": "",
+      "startDate": null,
+      "endDate": null,
+      "img": "/uploads/1777598281094-IMG_3499.jpg",
+      "sold": false,
+      "available": false
+    }
+  ]
 }

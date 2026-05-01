@@ -128,7 +128,7 @@ export default function Lightbox({ artwork, onClose }) {
                 </h2>
               </div>
               <p style={{ color: '#aaa', fontSize: '0.9rem', marginBottom: '2rem' }}>
-                {artwork.medium} {artwork.date && `? ${artwork.date}`}
+                {artwork.medium} {artwork.width && artwork.height ? `— ${artwork.width}" x ${artwork.height}"` : ''} {artwork.date && `— ${artwork.date}`}
               </p>
               <p style={{ lineHeight: '1.6', fontSize: '0.95rem', marginBottom: '3rem', whiteSpace: 'pre-wrap' }}>
                 {artwork.description || "No description provided."}
