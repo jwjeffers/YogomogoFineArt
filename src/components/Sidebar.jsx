@@ -5,8 +5,8 @@ export default function Sidebar({ currentRoute, setRoute, handleArtworkClick }) 
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    fetch('/api/data')
-      .then(r => r.ok ? r.json() : fetch('/data.json?t=' + Date.now()).then(r => r.json()))
+    fetch('/data.json?t=' + Date.now())
+      .then(r => r.json())
       .then(d => setArtworks(d.artworks || []))
       .catch(e => console.error(e));
   }, []);
