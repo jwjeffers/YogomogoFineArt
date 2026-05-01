@@ -15,9 +15,17 @@ export default function Gallery({ onArtworkDoubleClick }) {
 
   return (
     <div style={{ paddingTop: '8rem', paddingBottom: '4rem', paddingRight: '2rem' }}>
-      <div className="masonry-grid">
+      <div className="packing-gallery-grid">
         {artworks.map(art => (
-          <div key={art.id} className="artwork-card" onDoubleClick={() => onArtworkDoubleClick(art)}>
+          <div 
+            key={art.id} 
+            className="artwork-card" 
+            onDoubleClick={() => onArtworkDoubleClick(art)}
+            style={{ 
+              gridColumnEnd: art.width ? `span ${Math.round(art.width)}` : 'span 10',
+              gridRowEnd: art.height ? `span ${Math.round(art.height)}` : 'span 10'
+            }}
+          >
             <img src={art.img} alt={art.title} />
             
             <div className="artwork-hover-overlay">

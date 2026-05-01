@@ -133,6 +133,20 @@
       "img": "/uploads/1777605973477-IMG_3068 - Copy.jpg",
       "sold": false,
       "available": true
+    },
+    {
+      "id": "1777652857913",
+      "title": "Coffee Set",
+      "medium": "Oil on ACM Panel",
+      "width": "20",
+      "height": "16",
+      "description": "A silver-plated coffee set situated on blue satin.",
+      "date": "2025-10-01 to 2025-12-31",
+      "startDate": "2025-10-01",
+      "endDate": "2025-12-31",
+      "img": "/uploads/1777652857894-1973F6D34-FEB7-4CAE-BEEA-9DD696D15B18.jpg",
+      "sold": false,
+      "available": true
     }
   ]
 }
