@@ -147,6 +147,34 @@
       "img": "/uploads/1777652857894-1973F6D34-FEB7-4CAE-BEEA-9DD696D15B18.jpg",
       "sold": false,
       "available": true
+    },
+    {
+      "id": "1778792043310",
+      "title": "Jade Rabbit",
+      "medium": "Oil on Hardboard Panel",
+      "width": "8",
+      "height": "10",
+      "description": "An alla prima study of an imaginative jade rabbit. Unfortunately, this study was later damaged by premature varnishing attempts, but it makes a good digital work.",
+      "date": "2026-04-20",
+      "startDate": null,
+      "endDate": null,
+      "img": "/uploads/1778792043289-IMG_3504.jpg",
+      "sold": false,
+      "available": false
+    },
+    {
+      "id": "1778792254853",
+      "title": "Moonlit Sea",
+      "medium": "Oil on Hardboard Panel",
+      "width": "16",
+      "height": "20",
+      "description": "This was an alla prima imaginative study of clouds and moonlight.",
+      "date": "2026-05-12 to 2026-05-12",
+      "startDate": "2026-05-12",
+      "endDate": "2026-05-12",
+      "img": "/uploads/1778792254827-IMG_3534.jpg",
+      "sold": false,
+      "available": true
     }
   ]
 }
