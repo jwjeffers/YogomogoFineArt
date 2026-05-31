@@ -175,6 +175,20 @@
       "img": "/uploads/1778792254827-IMG_3534.jpg",
       "sold": false,
       "available": true
+    },
+    {
+      "id": "1780247104634",
+      "title": "Bearded Iris",
+      "medium": "Oil on MDF Panel",
+      "width": "8",
+      "height": "10",
+      "description": "A Bearded Iris Study",
+      "date": "2026-05-21",
+      "startDate": null,
+      "endDate": null,
+      "img": "/uploads/1780247104616-image.jpg",
+      "sold": false,
+      "available": true
     }
   ]
 }
