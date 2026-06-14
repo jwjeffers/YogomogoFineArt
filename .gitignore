@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Local launcher scripts
+start-servers.bat
+
