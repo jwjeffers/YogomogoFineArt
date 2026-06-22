@@ -199,9 +199,39 @@ export default function DevAdmin() {
             <h3>Current Artworks</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               {(data.artworks || []).map(a => (
-                <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f9f9f9', borderRadius: '8px', border: editingArtwork?.id === a.id ? '2px solid black' : 'none' }}>
-                  <span>{a.title} <strong style={{color: a.sold ? '#900' : (a.available ? 'green' : 'gray'), fontSize:'0.8em'}}>[{a.sold ? 'Sold' : (a.available ? 'For Sale' : 'NFS')}]</strong></span>
+                <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.8rem 1rem', background: '#f9f9f9', borderRadius: '8px', border: editingArtwork?.id === a.id ? '2px solid black' : 'none' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    {a.img && (
+                      <div style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '4px',
+                        overflow: 'hidden',
+                        border: '3px solid white',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#ffffff',
+                        flexShrink: 0
+                      }}>
+                        <img src={a.img} alt={a.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                    )}
+                    <span>{a.title} <strong style={{color: a.sold ? '#900' : (a.available ? 'green' : 'gray'), fontSize:'0.8em'}}>[{a.sold ? 'Sold' : (a.available ? 'For Sale' : 'NFS')}]</strong></span>
+                  </div>
                   <div>
+                    {a.img && (
+                      <a 
+                        href={a.img} 
+                        download={`${a.title.replace(/\s+/g, '_')}_image`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'green', textDecoration: 'none', cursor: 'pointer', marginRight: '1rem', fontSize: '0.9rem' }}
+                      >
+                        Download
+                      </a>
+                    )}
                     <button onClick={() => { setEditingArtwork(a); setArtworkMultipleDates(!!a.startDate); }} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '1rem' }}>Edit</button>
                     <button onClick={() => handleDeleteArtwork(a.id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
                   </div>
@@ -252,6 +282,36 @@ export default function DevAdmin() {
                   <option value="nfs">Not For Sale / Archive (View Only)</option>
                 </select>
               </div>
+
+              {editingArtwork && editingArtwork.img && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.5rem 0' }}>
+                  <label style={{ fontWeight: 'bold' }}>Current Image:</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <img 
+                      src={editingArtwork.img} 
+                      alt="Current preview" 
+                      style={{ height: '60px', width: 'auto', borderRadius: '4px', border: '1px solid #ccc' }} 
+                    />
+                    <a 
+                      href={editingArtwork.img} 
+                      download={`${editingArtwork.title.replace(/\s+/g, '_')}_image`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ 
+                        padding: '0.4rem 0.8rem', 
+                        background: '#333', 
+                        color: '#fff', 
+                        borderRadius: '4px', 
+                        fontSize: '0.8rem', 
+                        textDecoration: 'none',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Download Existing Image
+                    </a>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label>Upload Image:</label><br/>
