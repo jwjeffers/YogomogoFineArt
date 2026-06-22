@@ -203,6 +203,20 @@
       "img": "/uploads/1781410734416-ORB.png",
       "sold": false,
       "available": true
+    },
+    {
+      "id": "1782096307704",
+      "title": "Untitled",
+      "medium": "Oil on Linen Panel",
+      "width": "9",
+      "height": "12",
+      "description": "",
+      "date": "2026-06-14 to 2026-06-20",
+      "startDate": "2026-06-14",
+      "endDate": "2026-06-20",
+      "img": "/uploads/1782096307688-IMG_3652_copy.jpg",
+      "sold": false,
+      "available": true
     }
   ]
 }
