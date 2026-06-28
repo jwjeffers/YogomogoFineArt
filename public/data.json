@@ -217,6 +217,20 @@
       "img": "/uploads/1782096307688-IMG_3652_copy.jpg",
       "sold": false,
       "available": true
+    },
+    {
+      "id": "1782690791385",
+      "title": "Green Buge",
+      "medium": "Oil on Hardboard",
+      "width": "10",
+      "height": "8",
+      "description": "",
+      "date": "2026-06-22 to 2026-06-28",
+      "startDate": "2026-06-22",
+      "endDate": "2026-06-28",
+      "img": "/uploads/1782690791286-IMG_3661.png",
+      "sold": false,
+      "available": true
     }
   ]
 }
