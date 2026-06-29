@@ -3,6 +3,7 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import multer from 'multer';
+import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 import { exec } from 'child_process';
 
@@ -34,9 +35,58 @@ app.post('/api/data', (req, res) => {
   res.json({ success: true });
 });
 
-app.post('/api/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('image'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  res.json({ url: '/uploads/' + req.file.filename });
+  
+  const tempPath = req.file.path;
+  const ext = path.extname(req.file.originalname).toLowerCase();
+  
+  // Decide target output name and formats
+  let outputFilename = req.file.filename;
+  if (ext === '.heic') {
+    outputFilename = req.file.filename.replace(/\.heic$/i, '.jpg');
+  }
+  
+  const outputPath = path.join(UPLOADS_DIR, outputFilename);
+  
+  try {
+    let pipeline = sharp(tempPath)
+      .rotate() // Auto-rotate based on EXIF orientation
+      .resize({
+        width: 2048,
+        height: 2048,
+        fit: 'inside',
+        withoutEnlargement: true
+      })
+      .toColourspace('srgb'); // Convert color space to standard web sRGB
+      
+    // Set appropriate compression and output settings
+    if (ext === '.heic' || ext === '.jpg' || ext === '.jpeg') {
+      pipeline = pipeline.jpeg({ quality: 85, mozjpeg: true });
+    } else if (ext === '.png') {
+      pipeline = pipeline.png({ compressionLevel: 8, palette: false });
+    }
+    
+    // Process image into buffer
+    const buffer = await pipeline.toBuffer();
+    
+    // Clean up temporary raw file if it was converted/saved elsewhere
+    if (outputPath !== tempPath) {
+      try {
+        fs.unlinkSync(tempPath);
+      } catch (err) {
+        console.warn('Could not delete temp HEIC file:', err.message);
+      }
+    }
+    
+    // Write processed buffer to output location
+    fs.writeFileSync(outputPath, buffer);
+    res.json({ url: '/uploads/' + outputFilename });
+  } catch (err) {
+    console.error('Sharp image processing failed. Falling back to raw file.', err);
+    // Graceful fallback to original file if Sharp fails
+    res.json({ url: '/uploads/' + req.file.filename });
+  }
 });
 
 app.post('/api/publish', (req, res) => {
