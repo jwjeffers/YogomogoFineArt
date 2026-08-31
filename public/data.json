@@ -246,6 +246,20 @@
       "img": "/uploads/1782693808153-unnamed.jpg",
       "sold": false,
       "available": true
+    },
+    {
+      "id": "1787343975428",
+      "title": "Untitled",
+      "medium": "Oil on Hardboard",
+      "width": "20",
+      "height": "16",
+      "description": "One of my favorite still lifes during this summer, I wanted to explore multiple surfaces of differing opacity and some slight imaginative coloring and design.",
+      "date": "2026-07-15 to 2026-08-19",
+      "startDate": "2026-07-15",
+      "endDate": "2026-08-19",
+      "img": "/uploads/1787343975265-unnamed (8).png",
+      "sold": false,
+      "available": true
     }
   ]
 }
