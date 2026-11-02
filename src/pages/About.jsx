@@ -35,13 +35,20 @@ export default function About() {
       <h1 style={{ fontSize: '3rem', marginBottom: '2rem' }}>About the Artist</h1>
       
       <div style={{ background: '#fff', padding: '3rem', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)' }}>
-        <h3 style={{ marginBottom: '1rem', color: 'var(--color-text-main)' }}>Jackson Jeffers</h3>
-        <p style={{ marginBottom: '1.5rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
-          Jackson Jeffers is a contemporary oil painter based in Raleigh, NC. His work explores the intersection of classical realism and modern fantasy, utilizing traditional techniques to craft deeply atmospheric compositions.
+        <h3 style={{ marginBottom: '1rem', color: 'var(--color-text-main)', fontSize: '1.5rem' }}>Artist Bio</h3>
+        <p style={{ marginBottom: '2.5rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+          Jackson Jeffers is an oil painter based in Raleigh, NC. Since 2023, he has been studying under Alia El-Bermani in Raleigh, developing a practice rooted in direct observation and traditional oil technique. He is currently focused on an ongoing study of fine art still life, figurative work, and illustration.
         </p>
-        <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '4rem' }}>
-          Driven by a desire to create environments of visual peace, his paintings balance rich color palettes with nuanced lighting. He is currently focused on an ongoing study of fine art still life, figurative work, and illustration.
-        </p>
+
+        <div style={{ borderTop: '1px solid #eaeaea', paddingTop: '2rem', marginBottom: '3rem' }}>
+          <h3 style={{ marginBottom: '1rem', color: 'var(--color-text-main)', fontSize: '1.5rem' }}>Artist Statement</h3>
+          <p style={{ marginBottom: '1.5rem', fontSize: '1.1rem', lineHeight: '1.6' }}>
+            As a still life artist, my work focuses on celebrating the qualities of objects and their depictions within oil paint. I am drawn to the weight, surface, and quiet character of familiar things, and the dialogue between a physical subject and its translation into pigment and brushwork.
+          </p>
+          <p style={{ fontSize: '1.1rem', lineHeight: '1.6' }}>
+            Driven by a desire to create environments of visual peace, my paintings balance rich color palettes with nuanced lighting to invite the viewer to slow down and look closely.
+          </p>
+        </div>
         
         <div style={{ borderTop: '1px solid #eaeaea', paddingTop: '2rem' }}>
           <h3 style={{ marginBottom: '1rem', color: 'var(--color-text-main)', fontSize: '1.5rem' }}>Contact</h3>
@@ -91,4 +98,3 @@ export default function About() {
     </div>
   );
 }
-
