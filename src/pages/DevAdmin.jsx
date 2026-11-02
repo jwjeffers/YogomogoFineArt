@@ -13,8 +13,9 @@ export default function DevAdmin() {
   const [uploadingExtra, setUploadingExtra] = useState(false);
   const [artworkMultipleDates, setArtworkMultipleDates] = useState(false);
   const [blogMultipleDates, setBlogMultipleDates] = useState(false);
-  
-  useEffect(() => {
+
+  const loadData = (retries = 10) => {
+    setLoading(true);
     fetch('/api/data')
       .then(r => {
         if (!r.ok) throw new Error('API not available');
@@ -26,10 +27,18 @@ export default function DevAdmin() {
         setLoading(false);
       })
       .catch((e) => {
-        console.error(e);
-        setIsLocal(false);
-        setLoading(false);
+        if (retries > 0) {
+          setTimeout(() => loadData(retries - 1), 800);
+        } else {
+          console.error(e);
+          setIsLocal(false);
+          setLoading(false);
+        }
       });
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   const saveData = async (newData) => {
@@ -171,6 +180,12 @@ export default function DevAdmin() {
       <div className="page container" style={{paddingTop: '8rem', textAlign: 'center'}}>
         <h1>Dev Mode Unavailable</h1>
         <p>This mode requires the local dev-server to be running. It is safely disabled in production.</p>
+        <button
+          onClick={() => loadData(5)}
+          style={{ marginTop: '1.5rem', padding: '0.6rem 1.5rem', background: '#000', color: '#fff', borderRadius: '20px', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}
+        >
+          Retry Connection
+        </button>
       </div>
     );
   }

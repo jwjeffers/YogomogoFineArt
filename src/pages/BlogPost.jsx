@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
+const getColumnCount = () => {
+  if (typeof window === 'undefined') return 3;
+  if (window.innerWidth <= 650) return 1;
+  if (window.innerWidth <= 1150) return 2;
+  return 3;
+};
+
 export default function BlogPost({ blogId, onBack }) {
   const [blog, setBlog] = useState(null);
   const [expandedImage, setExpandedImage] = useState(null);
+  const [ratios, setRatios] = useState({});
+  const [numCols, setNumCols] = useState(getColumnCount);
+
+  useEffect(() => {
+    const handleResize = () => setNumCols(getColumnCount());
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     fetch('/data.json?t=' + Date.now())
@@ -37,65 +52,93 @@ export default function BlogPost({ blogId, onBack }) {
   if (!blog) return null;
 
   const hasExtraImages = blog.images && blog.images.length > 0;
+  const allImages = [
+    ...(blog.cover ? [blog.cover] : []),
+    ...(blog.images || [])
+  ];
+
+  const columns = Array.from({ length: numCols }, () => []);
+  const colHeights = Array.from({ length: numCols }, () => 0);
+
+  if (hasExtraImages) {
+    // Place the text block at the top of the first column, then distribute all images into the shortest column
+    columns[0].push({ type: 'text' });
+    colHeights[0] += 0.9;
+
+    allImages.forEach((imgUrl, idx) => {
+      let shortestCol = 0;
+      for (let c = 1; c < numCols; c++) {
+        if (colHeights[c] < colHeights[shortestCol]) {
+          shortestCol = c;
+        }
+      }
+      const ratio = ratios[imgUrl] || 1.15;
+      columns[shortestCol].push({ type: 'image', url: imgUrl, index: idx });
+      colHeights[shortestCol] += ratio + 0.08;
+    });
+  }
 
   return (
-    <div className="page animate-fade-in" style={{ paddingTop: '8rem', paddingBottom: '4rem', paddingLeft: '4rem', paddingRight: '4rem' }}>
+    <div className="page animate-fade-in" style={{ paddingTop: '8rem', paddingBottom: '4rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
       
-      <button onClick={onBack} style={{ marginBottom: '3rem', background: 'transparent', color: 'var(--color-text-main)', border: '1px solid var(--color-border)', padding: '0.5rem 1rem', borderRadius: '20px', cursor: 'pointer' }}>
+      <button onClick={onBack} style={{ marginBottom: '2.5rem', background: 'transparent', color: 'var(--color-text-main)', border: '1px solid var(--color-border)', padding: '0.5rem 1rem', borderRadius: '20px', cursor: 'pointer' }}>
         &larr; Back to Studio Notes
       </button>
 
       {hasExtraImages ? (
-        <div className="masonry-grid" style={{ columnCount: window.innerWidth < 1000 ? 1 : 3, columnGap: '2rem' }}>
-          
-          {/* Text Content Block */}
-          <div style={{ breakInside: 'avoid', marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', lineHeight: '1.1' }}>{blog.title}</h1>
-            <p style={{ color: 'var(--color-text-muted)', marginBottom: '3rem', fontWeight: '500' }}>{blog.date}</p>
-            
-            <div style={{ lineHeight: '1.8', fontSize: '1.1rem', whiteSpace: 'pre-wrap', color: '#333' }}>
-              {renderTextWithLinks(blog.content)}
+        <div
+          className="stacked-masonry-grid"
+          style={{ gridTemplateColumns: `repeat(${numCols}, minmax(0, 1fr))` }}
+        >
+          {columns.map((colItems, colIdx) => (
+            <div key={colIdx} className="stacked-masonry-column">
+              {colItems.map((item, itemIdx) => {
+                if (item.type === 'text') {
+                  return (
+                    <div key="text-block" style={{ paddingBottom: '0.5rem' }}>
+                      <h1 style={{ fontSize: '3.2rem', marginBottom: '0.75rem', lineHeight: '1.1' }}>{blog.title}</h1>
+                      <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.75rem', fontWeight: '500' }}>{blog.date}</p>
+                      <div style={{ lineHeight: '1.8', fontSize: '1.05rem', whiteSpace: 'pre-wrap', color: '#333' }}>
+                        {renderTextWithLinks(blog.content)}
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <img
+                    key={`${item.index}-${item.url}`}
+                    src={item.url}
+                    alt={`${blog.title} ${item.index}`}
+                    onClick={() => setExpandedImage(item.url)}
+                    onLoad={(e) => {
+                      const { naturalWidth, naturalHeight } = e.currentTarget;
+                      if (naturalWidth > 0 && naturalHeight > 0) {
+                        const measured = naturalHeight / naturalWidth;
+                        setRatios(prev => (prev[item.url] === measured ? prev : { ...prev, [item.url]: measured }));
+                      }
+                    }}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                      cursor: 'pointer'
+                    }}
+                  />
+                );
+              })}
             </div>
-          </div>
-
-          {/* Cover Image */}
-          {blog.cover && (
-            <img 
-              src={blog.cover} 
-              alt="Cover" 
-              onClick={() => setExpandedImage(blog.cover)}
-              style={{ width: '100%', marginBottom: '2rem', breakInside: 'avoid', display: 'block', cursor: 'pointer', borderRadius: 'var(--radius-sm)' }} 
-            />
-          )}
-
-          {/* Masonry Gallery Images */}
-          {blog.images.map((imgUrl, i) => (
-            <img 
-              key={i} 
-              src={imgUrl} 
-              alt={`${blog.title} detail ${i}`} 
-              onClick={() => setExpandedImage(imgUrl)}
-              style={{ 
-                width: '100%', 
-                marginBottom: '2rem', 
-                breakInside: 'avoid', 
-                display: 'block',
-                cursor: 'pointer',
-                borderRadius: 'var(--radius-sm)'
-              }} 
-            />
           ))}
-          
         </div>
       ) : (
-        /* Original Single Column Layout */
+        /* Single Note Layout */
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           {blog.cover && (
             <img 
               src={blog.cover} 
               alt={blog.title} 
               onClick={() => setExpandedImage(blog.cover)}
-              style={{ width: '100%', maxHeight: '500px', objectFit: 'contain', borderRadius: 'var(--radius-sm)', marginBottom: '3rem', cursor: 'pointer' }} 
+              style={{ width: '100%', maxHeight: '500px', objectFit: 'contain', marginBottom: '3rem', cursor: 'pointer' }} 
             />
           )}
           <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>{blog.title}</h1>
